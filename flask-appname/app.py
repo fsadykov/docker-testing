@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, jsonify
 import argparse
 
 ## Testing application for kubernetes or docker hosting
@@ -13,10 +13,10 @@ required.add_argument('-n', '--name', help='Name of the applcation.', required=T
 args = parser.parse_args()
 
 app = Flask(__name__)
-@app.route('/')
+@app.route('/', methods=['GET'])
 def hello_world():
-    return f'<h1>Application name: {args.name}</h1>'
-
+    data = {'name': args.name, 'message': 'The applcation is up.'}
+    return jsonify(data), 200
 
 
 if __name__ == '__main__':
