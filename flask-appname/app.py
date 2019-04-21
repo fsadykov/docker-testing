@@ -25,6 +25,8 @@ def generateVariables():
     if 'MESSAGE' in os.environ:
         data['messageFromEnv'] = os.environ.get('MESSAGE')
 
+    return data
+
 
 required.add_argument('-n', '--name', help='Name of the applcation.', required=True)
 args = parser.parse_args()
