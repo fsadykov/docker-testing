@@ -10,7 +10,7 @@ node {
   stage('Build docker image') {
     dir("${WORKSPACE}/flask-appname") {
       // Build the docker image
-      app = docker.build("fsadykov/grafana")
+      app = docker.build("fsadykov/docker-testing")
       }
   }
 
