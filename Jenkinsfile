@@ -23,4 +23,12 @@ node {
           app.push("latest")
       }
   }
+
+  stage('Clean up') {
+    sh """
+    docker rmi --force fsadykov/docker-testing:latest
+    docker rmi --force fsadykov/docker-testing:0.${BUILD_NUMBER}
+    """
+
+  }
 }
