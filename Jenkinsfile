@@ -8,9 +8,10 @@ node {
   checkout scm
 
   stage('Build docker image') {
-
+    dir("${WORKSPACE}/flask-appname") {
       // Build the docker image
-      app = docker.build("fsadykov/grafana", "-f ${WORKSPACE}/flask-appname/Dockerfile .")
+      app = docker.build("fsadykov/grafana")
+      }
   }
 
 
