@@ -32,7 +32,7 @@ args = parser.parse_args()
 app = Flask(__name__)
 @app.route('/', methods=['GET'])
 def hello_world():
-    data = {'name': args.name, 'message': 'The applcation is up.'}
+    data = generateVariables()
     return jsonify(data), 200
 
 
