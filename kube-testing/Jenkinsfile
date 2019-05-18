@@ -1,15 +1,16 @@
 import hudson.EnvVars
 
 def app
+def repo           = "kube-python-client"
+def ownerRepo      = "fsadykov"
+def repositoryName = "${ownerRepo}/${repo}"
+
 properties([
   parameters([
     booleanParam(defaultValue: false,
       description: 'Click this if you would like to deploy to latest',
       name: 'PUSH_LATEST'
       )])])
-def repo           = "kube-python-client"
-def ownerRepo      = "fsadykov"
-def repositoryName = "${ownerRepo}/${repo}"
 
 node {
 

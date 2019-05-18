@@ -3,7 +3,7 @@ from kubernetes import config
 import argparse
 import os
 
-config.load_incluster_config()
+
 
 ## Testing application for kubernetes or docker hosting
 ## Very useful when you testing loadbalancer
@@ -12,21 +12,17 @@ parser = argparse.ArgumentParser(description="Small application to print name of
 optional = parser._action_groups.pop()
 required = parser.add_argument_group('required arguments')
 
+
 def generateVariables():
     data = {
     'name': args.name,
     'message': 'The applcation is up.',
-    'userinfo' : [],
-    'defaultPod': {'apiVersion': 'v1',
-    'kind': 'Pod',
-    'metadata':
-    {'name': 'appone',
-    'labels': {'app': 'appone'}}, 
-    'spec': {'containers': [
-    {'name': 'appone-container',
-    'image': 'fsadykov/docker-testing',
-    'args': ['--name', 'kube-testing']}]}}}
-
+    'userinfo' : []}
+    deployment = deployPod(args.name)
+    if deployment:
+        data['deployMessage'] = 'Deployment was success!!'
+    else:
+        data['deployMessage'] = 'Deployment was not success!!'
     if 'TEST' in os.environ:
         data['testing'] = True
 
@@ -41,7 +37,23 @@ def generateVariables():
 
 
 required.add_argument('-n', '--name', help='Name of the applcation.', required=True)
+required.add_argument('-N', '--namespace', help='Name of the applcation.', required=True)
 args = parser.parse_args()
+
+def deployPod(name):
+    deployPodTemplate = {'apiVersion': 'v1',
+    'kind': 'Pod', 'metadata': {'name': f'{name}-deploy',
+    'labels': {'app': f'{name}-deploy'}},
+    'spec': {'containers': [
+    {'name': f'{name}-deploy',
+    'image': 'fsadykov/docker-testing',
+    'args': ['--name', 'kube-testing']}]}}
+    try:
+        config.load_incluster_config()
+        v1.create_namespaced_pod(args.namespace, body=deployPodTemplate)
+        return True
+    except:
+        return False
 
 app = Flask(__name__)
 @app.route('/', methods=['GET'])
