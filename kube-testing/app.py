@@ -12,8 +12,9 @@ parser = argparse.ArgumentParser(description="Small application to print name of
 optional = parser._action_groups.pop()
 required = parser.add_argument_group('required arguments')
 
+
 required.add_argument('-n', '--name', help='Name of the applcation.', required=True)
-required.add_argument('-ns', '--namespace', help='Name of the applcation.', required=True)
+required.add_argument('-N', '--namespace', help='The namespace for deployment.', required=False)
 args = parser.parse_args()
 
 def generateVariables():
