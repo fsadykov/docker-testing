@@ -14,7 +14,7 @@ node {
   checkout scm
 
   stage('Build docker image') {
-    dir("${WORKSPACE}/kube-testing") {
+    dir("${WORKSPACE}/flask-appname") {
       // Build the docker image
       app = docker.build("fsadykov/docker-testing")
       }
