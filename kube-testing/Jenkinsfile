@@ -1,0 +1,48 @@
+import hudson.EnvVars
+
+def app
+properties([
+  parameters([
+    booleanParam(defaultValue: false,
+      description: 'Click this if you would like to deploy to latest',
+      name: 'PUSH_LATEST'
+      )])])
+def repo           = "kube-python-client"
+def ownerRepo      = "fsadykov"
+def repositoryName = "${ownerRepo}/${repo}"
+
+node {
+
+  // Pooling the docker image
+  checkout scm
+
+  stage('Build docker image') {
+    dir("${WORKSPACE}/flask-appname") {
+      // Build the docker image
+      app = docker.build("${repositoryName}")
+      }
+  }
+
+
+  stage('Push image') {
+
+     // Push docker image to the Docker hub
+      docker.withRegistry('', 'dockerhub-credentials') {
+          app.push("0.${BUILD_NUMBER}")
+
+          // If push to latest parameters selected
+          if (params.PUSH_LATEST){
+            app.push("latest")
+          }
+      }
+  }
+
+  stage('Clean up') {
+    sh """
+    docker rmi --force python:latest
+    docker rmi --force ${repositoryName}:latest
+    docker rmi --force ${repositoryName}:0.${BUILD_NUMBER}
+    """
+
+  }
+}
