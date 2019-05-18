@@ -1,5 +1,5 @@
 from flask import Flask, jsonify
-from kubernetes import config
+from kubernetes import config, client
 import argparse
 import os
 
@@ -14,7 +14,7 @@ required = parser.add_argument_group('required arguments')
 
 
 required.add_argument('-n', '--name', help='Name of the applcation.', required=True)
-required.add_argument('-N', '--namespace', help='The namespace for deployment.', required=False)
+required.add_argument('-N', '--namespace', help='The namespace for deployment.', required=True)
 args = parser.parse_args()
 
 def generateVariables():
@@ -52,6 +52,7 @@ def deployPod(name):
     'args': ['--name', 'kube-testing']}]}}
     try:
         config.load_incluster_config()
+        v1 = client.CoreV1Api()
         v1.create_namespaced_pod(args.namespace, body=deployPodTemplate)
         return True
     except:
