@@ -12,6 +12,9 @@ parser = argparse.ArgumentParser(description="Small application to print name of
 optional = parser._action_groups.pop()
 required = parser.add_argument_group('required arguments')
 
+required.add_argument('-n', '--name', help='Name of the applcation.', required=True)
+required.add_argument('-ns', '--namespace', help='Name of the applcation.', required=True)
+args = parser.parse_args()
 
 def generateVariables():
     data = {
@@ -36,9 +39,7 @@ def generateVariables():
     return data
 
 
-required.add_argument('-n', '--name', help='Name of the applcation.', required=True)
-required.add_argument('-N', '--namespace', help='Name of the applcation.', required=True)
-args = parser.parse_args()
+
 
 def deployPod(name):
     deployPodTemplate = {'apiVersion': 'v1',
