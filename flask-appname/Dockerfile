@@ -10,3 +10,4 @@ EXPOSE 5000
 
 ## Install all requirements to the docker image
 RUN python -m pip install -r /app/requirements.txt
+ENTRYPOINT ["python", "/app/app.py"]
