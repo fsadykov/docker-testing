@@ -9,5 +9,6 @@ spec:
   automountServiceAccountToken: true
   containers:
   - name: kube-client-container
-    image: fsadykov/kube-python-client:0.2
-    args: ["--name=appone", "--namespace=default"]
+    image: fsadykov/kube-python-client:0.8
+    imagePullPolicy: Always
+    args: ["--name", "appone", "--namespace", "default"]
