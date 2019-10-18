@@ -9,4 +9,4 @@ spec:
       role: frontend
   env:
     - name: GIT_ADMIN_TOKEN
-      value: awdawd
+      value: This value parsed from Environment Variable 
